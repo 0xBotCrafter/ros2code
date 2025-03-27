@@ -5,12 +5,12 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
-# find dependencies
+# 1.查找依赖的库
 find_package(ament_cmake REQUIRED)
 find_package(builtin_interfaces REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 
-# cmake函数：生成接口，来自rosidl_default_generators
+# 2.cmake函数：生成接口，来自rosidl_default_generators
 rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/SystemStatus.msg" # msg文件1
   DEPENDENCIES builtin_interfaces # 依赖的接口

@@ -1,12 +1,12 @@
-#include <iostream>
-#include "rclcpp/rclcpp.hpp"
+#include <iostream> // 包含iostream头文件
+#include "rclcpp/rclcpp.hpp" // 包含ROS2的头文件
 
-int main(int argc, char **argv) { // argc: argument count, argv: argument vector
-    rclcpp::init(argc, argv); // initialize ROS2
-    auto node = std::make_shared<rclcpp::Node>("first_node_cpp"); // create a node
-    RCLCPP_INFO(node->get_logger(), "first_node_cpp has been created!");           // print "Hello, world!" to the console
-    rclcpp::spin(node); // spin the node
-    rclcpp::shutdown(); // shutdown ROS2
+int main(int argc, char **argv) { // 主函数
+    rclcpp::init(argc, argv); // 初始化ROS2
+    auto node = std::make_shared<rclcpp::Node>("first_node_cpp"); // 创建一个节点
+    RCLCPP_INFO(node->get_logger(), "first_node_cpp has been created!");// 输出信息
+    rclcpp::spin(node); // 阻塞，直到节点被关闭
+    rclcpp::shutdown(); // 关闭ROS2
     
     return 0;
 }

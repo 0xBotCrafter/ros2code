@@ -5,12 +5,14 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
-# 1.find dependencies
+# 1.查找依赖
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 
-# 2.add executable
+# 2.添加可执行文件
 add_executable(node_cpp src/node_cpp.cpp)
+
+# 3.链接依赖库
 ament_target_dependencies(node_cpp rclcpp)
 
 if(BUILD_TESTING)
@@ -25,7 +27,7 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
-# 3.install
+# 4.安装可执行文件
 install(TARGETS
   node_cpp
   DESTINATION lib/${PROJECT_NAME}

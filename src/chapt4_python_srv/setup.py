@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
-
-package_name = 'chapt2_2_pkg_py'
+from glob import glob
+package_name = 'chapt4_python_srv'
 
 setup(
     name=package_name,
@@ -10,6 +10,10 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
+        # 将图片文件拷入 install 的资源文件夹中
+        ('share/' + package_name+"/resource", ['resource/default.jpg','resource/pic1.jpg']),
+        # 
+        ('share/' + package_name+"/launch", glob('launch/*.launch.py'))
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -20,8 +24,9 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            # 注册程序入口：
-            'node_py = chapt2_2_pkg_py.node_py:main',
+            'face_detect = chapt4_python_srv.face_detect:main',
+            'face_detect_node = chapt4_python_srv.face_detect_node:main',
+            'face_detect_client = chapt4_python_srv.face_detect_client:main',
         ],
     },
 )
