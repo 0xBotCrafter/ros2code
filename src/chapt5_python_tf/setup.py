@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
-from glob import glob
-package_name = 'chapt4_python_srv'
+
+package_name = 'chapt5_python_tf'
 
 setup(
     name=package_name,
@@ -10,10 +10,6 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
-        # 将图片文件拷入 install 的资源文件夹中
-        ('share/' + package_name+"/resource", ['resource/default.jpg','resource/pic1.jpg']),
-        # 将 launch 文件拷入 install 的launch文件夹中
-        ('share/' + package_name+"/launch", glob('launch/*.launch.py'))
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -24,8 +20,9 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'face_detect_node = chapt4_python_srv.face_detect_node:main',
-            'face_detect_client = chapt4_python_srv.face_detect_client:main',
+            'python_tf_broadcaster_s = chapt5_python_tf.python_tf_broadcaster_s:main',
+            'python_tf_broadcaster   = chapt5_python_tf.python_tf_broadcaster:main',
+            'python_tf_listener      = chapt5_python_tf.python_tf_listener:main',
         ],
     },
 )

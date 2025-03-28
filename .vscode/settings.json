@@ -1,5 +1,6 @@
 {
   "cSpell.words": [
+    "imread",
     "RCLCPP",
     "rclpy",
     "sysstatus"

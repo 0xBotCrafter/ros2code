@@ -49,58 +49,43 @@ public:
         });
     };
 
-    // 创建发送参数客户端发送请求,返回结果
-    SetParameters::Response::SharedPtr call_set_parameters(rcl_interfaces::msg::Parameter &param)
-    {
-        auto set_param = this->create_client<SetParameters>("/turtle_control/set_parameters"); // 创建一个客户端
-        // 1. 检查srv是否上线
-        while (!set_param->wait_for_service(1s)) // 等待1s
-        {
-            if (!rclcpp::ok()) // 如果程序退出
-            {
-                RCLCPP_ERROR(this->get_logger(), "Interrupted while waiting for the patrol service. Exiting.");
-                return nullptr;
-            }
-            else
-            {
-                RCLCPP_INFO(this->get_logger(), "patrol service not available, waiting again...");
-            }
-        }
-        // 2. 产生request
-        auto request = std::make_shared<SetParameters::Request>();
-        request->parameters.push_back(param);
-        // 3. 调用客户端
-        auto future = set_param->async_send_request(request);
-        rclcpp::spin_until_future_complete(this->get_node_base_interface(), future);
-        auto response = future.get();
-        return response;
-    }
-
     // 调用函数,更新参数
-    void update_parameters_k(double k)
-    {
+    void update_parameters_k(double k){
+        // 1 创建参数对象
         auto param = rcl_interfaces::msg::Parameter();
         param.name = "k";
-
         auto param_value = rcl_interfaces::msg::ParameterValue();
         param_value.double_value = k;
         param_value.type = rcl_interfaces::msg::ParameterType::PARAMETER_DOUBLE;
         param.value = param_value;
 
-        auto response = call_set_parameters(param);
-        if (response == NULL)
-        {
-            RCLCPP_INFO(this->get_logger(), "update parameters failed1");
-            return;
+        // 2 创建客户端，调用set_parameters服务
+        auto set_param = this->create_client<SetParameters>("/turtle_control/set_parameters");
+        // 2.1 检查srv是否上线
+        while (!set_param->wait_for_service(1s)){ // 等待1s
+            if (!rclcpp::ok()){ // 如果程序退出
+                RCLCPP_INFO(this->get_logger(), "update parameters failed1");
+                return;
+            }
+            else{
+                RCLCPP_INFO(this->get_logger(), "patrol service not available, waiting again...");
+            }
         }
-        for (auto &result : response->results)
-        {
-            if (result.successful == 0)
-            {
+        // 2.2 产生request
+        auto request = std::make_shared<SetParameters::Request>();
+        request->parameters.push_back(param);
+        // request->parameter.push_back(param2);
+        // 2.3 调用客户端设置参数
+        auto future = set_param->async_send_request(request);
+        rclcpp::spin_until_future_complete(this->get_node_base_interface(), future);
+        auto response = future.get();
+        
+        // 3 检查设置结果
+        for (auto &result : response->results){
+            if (result.successful == 0){
                 RCLCPP_ERROR(this->get_logger(), "update parameters failed2");
             }
-            else
-            {
+            else{
                 RCLCPP_INFO(this->get_logger(), "update parameters successful");
             }
         }

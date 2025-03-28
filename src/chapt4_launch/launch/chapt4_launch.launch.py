@@ -6,14 +6,14 @@ from ament_index_python.packages import get_package_share_directory
 def generate_launch_description():
     
     # 动作1:启动其他launch   
-    action_launches_path = [
+    launch_path = [
         get_package_share_directory('chapt4_cpp_srv'),'/launch','/turtle_patrol.launch.py',
         # get_package_share_directory('chapt4_python_srv'),'launch','face_detect.launch.py',
         ]
     
-    action_launches = launch.actions.IncludeLaunchDescription(
+    action_launch = launch.actions.IncludeLaunchDescription(
         launch.launch_description_sources.PythonLaunchDescriptionSource(
-            action_launches_path
+            launch_path
         )
     )
     
@@ -39,7 +39,7 @@ def generate_launch_description():
         launch.actions.TimerAction(
             period=6.0,
             actions=[
-                action_launches,
+                action_launch,
                 ]
         )
     ])
